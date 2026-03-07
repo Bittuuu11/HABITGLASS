@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BITZ | HabitGlass Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-panel">
+            <div class="logo-section">
+                <h1>BITZ</h1>
+                <p id="currentMonthText">MARCH 2026</p>
+            </div>
+            <div class="header-stats">
+                <div class="progress-info">
+                    <span>Overall Progress</span>
+                    <span id="globalProgressPercent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="globalProgressBar" class="progress-bar-fill"></div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" class="glass-card" title="Toggle Theme">🌓</button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard-content">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="glass-panel" style="position: relative;">
+                    <div style="margin-bottom: 20px;">
+                        <h2 style="font-size: 1.2rem;">Habits</h2>
+                        <button id="addHabitBtn" class="btn btn-primary" style="position: absolute; top: 15px; right: 20px; padding: 8px 15px; font-size: 0.8rem; height: auto; min-width: 60px;">+ New</button>
+                    </div>
+                    <div id="habitList" class="habit-list">
+                        <!-- Habits will be injected here -->
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="margin-top: 20px;">
+                    <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Summary</h2>
+                    <div id="summaryStats">
+                        <div class="stat-item glass-card" style="margin-bottom: 10px;">
+                            <span style="display: block; font-size: 0.8rem; color: var(--text-secondary);">Total Completed</span>
+                            <span id="totalCompletedText" style="font-size: 1.5rem; font-weight: 700;">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Content -->
+            <section class="main-column">
+                <!-- Tracker Grid -->
+                <div class="glass-panel tracker-section">
+                    <div id="trackerGrid" class="tracker-grid-container">
+                        <!-- Grid Header and Rows will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Analytics & Chart -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="glass-panel">
+                        <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Habit Analysis</h2>
+                        <table id="analyticsTable">
+                            <thead>
+                                <tr>
+                                    <th>Habit</th>
+                                    <th>Goal</th>
+                                    <th>Actual</th>
+                                    <th>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analyticsBody">
+                                <!-- Analytics rows will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="glass-panel">
+                        <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Monthly Trend</h2>
+                        <canvas id="progressChart" style="max-height: 250px;"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="habitModal" class="modal-overlay">
+        <div class="glass-panel modal-content">
+            <h2 id="modalTitle">Add New Habit</h2>
+            <input type="text" id="habitNameInput" class="input-glass" placeholder="Habit Name (e.g. Wake up 5 AM)">
+            
+            <label style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-top: 15px;">Frequency</label>
+            <select id="habitFrequencyInput" class="input-glass" style="appearance: none; cursor: pointer;">
+                <option value="daily">Daily</option>
+                <option value="weekdays">Weekdays Only</option>
+                <option value="weekends">Weekends Only</option>
+            </select>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="saveHabitBtn" class="btn btn-primary" style="flex: 1;">Save</button>
+                <button id="closeModalBtn" class="btn glass-card" style="flex: 1;">Cancel</button>
+            </div>
+            <button id="deleteHabitBtn" class="btn" style="width: 100%; margin-top: 10px; color: #ff4d4d; justify-content: center; display: none;">Delete Habit</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
