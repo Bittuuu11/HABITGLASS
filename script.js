@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentEditingHabitId = null;
     const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0-indexed
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    let currentYear = now.getFullYear();
+    let currentMonth = now.getMonth(); // 0-indexed
+    let daysInMonth;
     const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
     // --- DOM Elements ---
@@ -33,19 +33,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModalBtn = document.getElementById('closeModalBtn');
     const deleteHabitBtn = document.getElementById('deleteHabitBtn');
     const themeToggle = document.getElementById('themeToggle');
+    const prevMonthBtn = document.getElementById('prevMonth');
+    const nextMonthBtn = document.getElementById('nextMonth');
 
     let chart = null;
 
     // --- Initialization ---
     function init() {
+        daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
         currentMonthTextEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        
         renderHabits();
         renderGrid();
         renderAnalytics();
         updateGlobalStats();
+        
+        if (chart) {
+            chart.destroy();
+        }
         initChart();
         setupTheme();
     }
+
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        init();
+    }
+
+    prevMonthBtn.onclick = () => changeMonth(-1);
+    nextMonthBtn.onclick = () => changeMonth(1);
 
     // --- Render Functions ---
     function renderHabits() {

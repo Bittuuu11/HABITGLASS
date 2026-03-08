@@ -101,6 +101,35 @@ header {
     -webkit-text-fill-color: transparent;
 }
 
+.month-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all var(--transition-speed) ease;
+    line-height: 1;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.1);
+    border-color: var(--accent);
+}
+
 .dashboard-content {
     display: grid;
     grid-template-columns: 300px 1fr;
