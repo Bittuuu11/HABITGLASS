@@ -98,6 +98,7 @@ header {
     letter-spacing: -1px;
     background: linear-gradient(to right, #ff007c, #00ffa3);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -351,6 +352,40 @@ td {
 .modal-content {
     width: 90%;
     max-width: 400px;
+}
+
+.weekday-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.day-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+}
+
+.day-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .input-glass {

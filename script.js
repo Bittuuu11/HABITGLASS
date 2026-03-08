@@ -32,9 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveHabitBtn = document.getElementById('saveHabitBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const deleteHabitBtn = document.getElementById('deleteHabitBtn');
-    const themeToggle = document.getElementById('themeToggle');
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
+    const weekdaySelector = document.getElementById('weekdaySelector');
+    const dayButtons = document.querySelectorAll('.day-btn');
 
     let chart = null;
 
@@ -70,12 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
     prevMonthBtn.onclick = () => changeMonth(-1);
     nextMonthBtn.onclick = () => changeMonth(1);
 
+    // Weekday Selection Logic
+    dayButtons.forEach(btn => {
+        btn.onclick = () => {
+            btn.classList.toggle('active');
+        };
+    });
+
+    habitFrequencyInput.onchange = () => {
+        weekdaySelector.style.display = habitFrequencyInput.value === 'custom' ? 'block' : 'none';
+    };
+
     // --- Render Functions ---
     function renderHabits() {
         habitListEl.innerHTML = '';
         habits.forEach(habit => {
             const streak = calculateStreak(habit);
-            const freqLabel = habit.frequency === 'daily' ? 'Daily' : habit.frequency === 'weekdays' ? 'Weekdays' : 'Weekends';
+            let freqLabel = 'Daily';
+            if (habit.frequency === 'weekdays') freqLabel = 'Weekdays';
+            else if (habit.frequency === 'weekends') freqLabel = 'Weekends';
+            else if (habit.frequency === 'custom') freqLabel = 'Custom';
+
             const card = document.createElement('div');
             card.className = 'glass-card habit-item';
             card.innerHTML = `
@@ -94,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderGrid() {
         trackerGridEl.innerHTML = '';
+        trackerGridEl.style.gridTemplateColumns = `180px repeat(${daysInMonth}, 1fr)`;
         const dayNamesShort = ["S", "M", "T", "W", "T", "F", "S"];
         
         // Header Row
@@ -155,6 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
         if (habit.frequency === 'weekdays') return !isWeekend;
         if (habit.frequency === 'weekends') return isWeekend;
+        if (habit.frequency === 'custom' && habit.selectedDays) {
+            return habit.selectedDays.includes(dayOfWeek);
+        }
         return true;
     }
 
@@ -260,6 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitle.textContent = 'Add New Habit';
         habitNameInput.value = '';
         habitFrequencyInput.value = 'daily';
+        weekdaySelector.style.display = 'none';
+        dayButtons.forEach(btn => btn.classList.remove('active'));
         deleteHabitBtn.style.display = 'none';
         habitModal.style.display = 'flex';
     };
@@ -270,6 +292,22 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitle.textContent = 'Edit Habit';
         habitNameInput.value = habit.name;
         habitFrequencyInput.value = habit.frequency || 'daily';
+        
+        if (habit.frequency === 'custom') {
+            weekdaySelector.style.display = 'block';
+            dayButtons.forEach(btn => {
+                const day = parseInt(btn.getAttribute('data-day'));
+                if (habit.selectedDays && habit.selectedDays.includes(day)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        } else {
+            weekdaySelector.style.display = 'none';
+            dayButtons.forEach(btn => btn.classList.remove('active'));
+        }
+
         deleteHabitBtn.style.display = 'block';
         habitModal.style.display = 'flex';
     };
@@ -279,12 +317,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const frequency = habitFrequencyInput.value;
         if (!name) return;
 
+        let selectedDays = [];
+        if (frequency === 'custom') {
+            dayButtons.forEach(btn => {
+                if (btn.classList.contains('active')) {
+                    selectedDays.push(parseInt(btn.getAttribute('data-day')));
+                }
+            });
+            if (selectedDays.length === 0) {
+                alert('Please select at least one day for custom frequency!');
+                return;
+            }
+        }
+
         if (currentEditingHabitId) {
             const habit = habits.find(h => h.id === currentEditingHabitId);
             habit.name = name;
             habit.frequency = frequency;
+            habit.selectedDays = selectedDays;
         } else {
-            habits.push({ id: Date.now(), name, goal: 30, frequency });
+            habits.push({ 
+                id: Date.now(), 
+                name, 
+                goal: 30, 
+                frequency,
+                selectedDays
+            });
         }
 
         saveData();

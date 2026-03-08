@@ -105,7 +105,21 @@
                 <option value="daily">Daily</option>
                 <option value="weekdays">Weekdays Only</option>
                 <option value="weekends">Weekends Only</option>
+                <option value="custom">Custom Days</option>
             </select>
+
+            <div id="weekdaySelector" style="display: none; margin-top: 15px;">
+                <label style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">Select Days</label>
+                <div class="weekday-grid">
+                    <button type="button" class="day-btn" data-day="1">M</button>
+                    <button type="button" class="day-btn" data-day="2">T</button>
+                    <button type="button" class="day-btn" data-day="3">W</button>
+                    <button type="button" class="day-btn" data-day="4">T</button>
+                    <button type="button" class="day-btn" data-day="5">F</button>
+                    <button type="button" class="day-btn" data-day="6">S</button>
+                    <button type="button" class="day-btn" data-day="0">S</button>
+                </div>
+            </div>
 
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button id="saveHabitBtn" class="btn btn-primary" style="flex: 1;">Save</button>
